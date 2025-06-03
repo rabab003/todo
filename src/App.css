@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "Comme-Thin";
+  src: url("/Fonts/Comme/Comme-Thin.ttf") format("truetype");
+}
+
+.iconButton:hover {
+  background-color: #c5c5c5 !important;
+}
+
+.todoCard {
+  transition: all 0.3s !important;
+}
+
+.todoCard:hover {
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
