@@ -11,6 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
 
 
 // import icons
@@ -19,13 +20,15 @@ import EditIcon from '@mui/icons-material/Edit';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import  IconButton  from '@mui/material/IconButton';
 
-import { useContext } from 'react';
+import { useContext , useState } from 'react';
 import { TodosContext } from './Contexts/todosContext';
 
 
-const open = false
-
 export default function Todo({todo, handleClick}) {
+
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [showUpdateDialog, SetShowUpdateDialog] = useState(false)
+  const [editTodo, setEditTodo] = useState({title:todo.title, date:todo.date})
 
   const {todos, setTodos} = useContext(TodosContext)
 
@@ -39,31 +42,122 @@ export default function Todo({todo, handleClick}) {
     setTodos(updatedTodos)
   }
 
+  function handleDeleteClick(){
+    setShowDeleteDialog(true)
+  }
+
+  function handleUpdateClick(){
+    SetShowUpdateDialog(true)
+  }
+
+  function handleDeleteClose(){
+    setShowDeleteDialog(false)
+  }
+
+  function handleUpdateClose(){
+    SetShowUpdateDialog(false)
+  }
+
+
+  function handleDeleteConfirm(){
+    const updatedTodos = todos.filter((t)=>{
+      return t.id != todo.id
+    })
+
+    setTodos(updatedTodos)
+  }
+
+  function handleUpdateConfirm(){
+    const updatedTodos = todos.map((t)=>{
+      if(t.id == todo.id){
+        return{...t , title:editTodo.title, date:editTodo.date}
+      }else{
+        return t
+      }
+    })
+
+    setTodos(updatedTodos)
+    SetShowUpdateDialog(false)
+  }
+
   return (
     <>
-        <Dialog
-        open={open}
-        // onClose={handleClose}
+
+    {/* delete dialog */}
+      <Dialog
+        open={showDeleteDialog}
+        onClose={handleDeleteClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
+          {"Delete this task ?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
+            Are you sure you want to delete this task?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {/* <Button onClick={handleClose}>Disagree</Button> */}
-          {/* <Button onClick={handleClose} autoFocus> */}
-            Agree
-          {/* </Button> */}
+          <Button onClick={handleDeleteClose}>No</Button>
+          <Button onClick={handleDeleteConfirm}  autoFocus>
+            Yes
+          </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog>    
+    {/* ==========the end of delete dialog ========== */}
+
+    {/* update dialog */}
+      <Dialog
+        open={showUpdateDialog}
+        onClose={handleUpdateClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {" Edit the task"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+           
+          </DialogContentText>
+           <TextField
+            value={editTodo.title}
+            onChange={(e)=>{
+              setEditTodo({...editTodo, title:e.target.value})
+            }}
+            fullWidth
+            id="task-input"
+            label="Task title ..."
+            variant="standard"
+            size="small"
+            sx={{}}
+          />
+           <TextField
+            value={editTodo.date}
+            onChange={(e)=>{
+              setEditTodo({...editTodo, date:e.target.value})
+            }}            
+            fullWidth
+            id="task-input"
+            label="Date ..."
+            variant="standard"
+            size="small"
+            sx={{}}
+          />
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUpdateClose}>No</Button>
+          <Button onClick={handleUpdateConfirm}  autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>    
+    {/* ==========the end of update dialog ========== */}
+
     <Card className='todoCard' sx={{width: '100%', mb: 2 }}>
+        
         <CardContent>
      
      <Grid container  style={{background:"#F7F8F9", padding:"13px", width:"100%", gap:"5px"}}>
@@ -79,7 +173,6 @@ export default function Todo({todo, handleClick}) {
               </IconButton>
 
         </Grid>
-
         <Grid size={7} sx={{ 
               display: "flex", 
               alignItems: "center",
@@ -94,20 +187,20 @@ export default function Todo({todo, handleClick}) {
 
 
         </Grid>
-
         <Grid size={3} sx={{ 
               display: "flex", 
               justifyContent: "flex-end", // Align icons to the right
               alignItems: "center", // Center vertically
             }}>
 
-
-              <IconButton sx={{color:"#BF9405"}}>
+               {/* ======= update Button ========*/}
+              <IconButton onClick={handleUpdateClick} sx={{color:"#BF9405"}}>
                 <EditIcon/>
               </IconButton> 
+               {/* ======= end update Button ========*/}
               
               <IconButton sx={{color:"red"
-              }}>
+              }} onClick={handleDeleteClick}>
               <DeleteIcon/>
               </IconButton>
         </Grid>

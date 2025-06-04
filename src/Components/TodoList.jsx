@@ -23,7 +23,7 @@ export default function TodoList() {
     return <Todo key={t.id} todo={t} />
   })
 
-  function handleAddClick(){
+  function handleAddClick(){ 
     const newTodo = {
       id:uId(),
       title:titleInput,
@@ -41,10 +41,12 @@ export default function TodoList() {
         <CardContent sx={{ px: 2, width: '100%',display:"flex", justifyContent:"center", alignItems:"center" , flexDirection:"column",py: 1 }}> {/* Adjust padding */}
           <Typography 
             sx={{ 
-              fontSize: "25px", 
+              fontSize: "26px", 
               fontWeight: "bold", 
               textAlign: "center", 
-              pb: 2 
+              pb: 3 ,
+              pt: 3 ,
+              color:"#232323"
             }} 
             variant="h2"
           >
