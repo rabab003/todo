@@ -9,8 +9,32 @@ import Button from '@mui/material/Button';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Todo from "./Todo";
+import { v4 as uId } from 'uuid';
+ 
+
+import { useState, useContext } from 'react';
+import { TodosContext } from './Contexts/todosContext';
 
 export default function TodoList() {
+
+  const {todos, setTodos} = useContext(TodosContext)
+  const [titleInput, setTitleInput]= useState("")
+  const todosJsx = todos.map((t)=>{
+    return <Todo key={t.id} todo={t} />
+  })
+
+  function handleAddClick(){
+    const newTodo = {
+      id:uId(),
+      title:titleInput,
+      date:"",
+      isCompleted:false
+    }
+
+    setTodos([...todos, newTodo])
+    setTitleInput("")
+  }
+
   return (
     <Container maxWidth="sm" sx={{ p: 0 }}> 
       <Card sx={{ width: '100%', p: 0, display:"flex", justifyContent:"center" }}> 
@@ -60,12 +84,14 @@ export default function TodoList() {
             </ToggleButton>
           </ToggleButtonGroup>
 
-          <Todo />
+          {todosJsx}
 
           {/* Input field section - Full width */}
           <Grid container spacing={1} sx={{ mt: 2, width: '100%',display:"flex" , justifyContent:"center" }} >
             <Grid item xs={8} sx={{ pl: 0 }}> {/* Remove left padding */}
               <TextField
+                value={titleInput}
+                onChange={(e)=> setTitleInput(e.target.value)}
                 fullWidth
                 id="task-input"
                 label="Add new task"
@@ -76,7 +102,7 @@ export default function TodoList() {
             </Grid>
             <Grid item xs={2} sx={{ pr: 0 }}>
               <Button 
-                
+                onClick={handleAddClick}
                 variant="contained" 
                 color="secondary"
                 sx={{ 
