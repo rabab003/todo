@@ -30,14 +30,13 @@ export default function TodoList() {
       date:"",
       isCompleted:false
     }
-
-    setTodos([...todos, newTodo])
+    
+    const updatedTodos = [...todos, newTodo]
+    setTodos(updatedTodos)
+    localStorage.setItem("todos", JSON.stringify(updatedTodos))
     setTitleInput("")
   }
 
-  setTodos([...todos, newTodo]);
-  localStorage.setItem("todos", JSON.stringify())
-  setTitleInput("") 
 
   return (
     <Container maxWidth="sm" sx={{ p: 0 }}> 
