@@ -35,6 +35,10 @@ export default function TodoList() {
     setTitleInput("")
   }
 
+  setTodos([...todos, newTodo]);
+  localStorage.setItem("todos", JSON.stringify())
+  setTitleInput("") 
+
   return (
     <Container maxWidth="sm" sx={{ p: 0 }}> 
       <Card sx={{ width: '100%', p: 0, display:"flex", justifyContent:"center" }}> 
