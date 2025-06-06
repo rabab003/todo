@@ -40,6 +40,8 @@ export default function Todo({todo, handleClick}) {
       return t
     })
     setTodos(updatedTodos)
+    localStorage.setItem("todos", JSON.stringify(updatedTodos))
+
   }
 
   function handleDeleteClick(){
@@ -65,6 +67,8 @@ export default function Todo({todo, handleClick}) {
     })
 
     setTodos(updatedTodos)
+        localStorage.setItem("todos", JSON.stringify(updatedTodos))
+
   }
 
   function handleUpdateConfirm(){
@@ -78,6 +82,8 @@ export default function Todo({todo, handleClick}) {
 
     setTodos(updatedTodos)
     SetShowUpdateDialog(false)
+    localStorage.setItem("todos", JSON.stringify(updatedTodos))
+
   }
 
   return (
@@ -156,12 +162,9 @@ export default function Todo({todo, handleClick}) {
       </Dialog>    
     {/* ==========the end of update dialog ========== */}
 
-    <Card className='todoCard' sx={{width: '100%', mb: 2 }}>
-        
-        <CardContent>
-     
+  <Card className='todoCard'  sx={{width: '100%',  mb: 2 }}>
+   <CardContent>
      <Grid container  style={{background:"#F7F8F9", padding:"13px", width:"100%", gap:"5px"}}>
-      
         <Grid size={1} 
               sx={{ 
               display: "flex", 
@@ -178,7 +181,7 @@ export default function Todo({todo, handleClick}) {
               alignItems: "center",
               flexDirection:"column",
             }}>
-          <Typography style={{fontSize:"18px", width:"100%" ,fontWeight:"bold" , textAlign:"center"}} variant="h2">
+          <Typography sx={{textDecoration: todo.isCompleted ? "line-through" : "none"}} style={{fontSize:"18px", width:"100%" ,fontWeight:"bold" , textAlign:"center"}} variant="h2">
             {todo.title}
           </Typography> 
           <Typography style={{fontSize:"13px" , textAlign:"center", width:"100%" }} variant="h3">

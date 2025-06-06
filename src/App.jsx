@@ -30,7 +30,7 @@ export default function IconLabelButtons() {
   const [todos, setTodos]=useState(initialTodos)
   
   return (
-    <div className="App" style={{display:"flex", justifyContent:"center",alignItems:"center", height:"100vh"}}>
+    <div className="App" style={{display:"flex", justifyContent:"center",alignItems:"center", height:"100vh", overflow:"hidden"}}>
     
     <TodosContext.Provider value={{todos, setTodos}}>
     <TodoList/>

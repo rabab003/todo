@@ -10,18 +10,45 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Todo from "./Todo";
 import { v4 as uId } from 'uuid';
+import { useState, useEffect,useContext} from 'react';
  
-
-import { useState, useContext } from 'react';
 import { TodosContext } from './Contexts/todosContext';
 
 export default function TodoList() {
 
   const {todos, setTodos} = useContext(TodosContext)
   const [titleInput, setTitleInput]= useState("")
-  const todosJsx = todos.map((t)=>{
-    return <Todo key={t.id} todo={t} />
-  })
+  const [displayedTodosType, setDisplayedTodosType] = useState("all")
+
+
+  // filtration arrays
+
+const completedTodos = todos.filter((t) => t.isCompleted);
+const notCompletedTodos = todos.filter((t) => !t.isCompleted);
+
+  
+  let todosToBeRendered  = todos
+
+  if(displayedTodosType == "done"){
+    todosToBeRendered = completedTodos
+  }else if(displayedTodosType == "notYet"){
+    todosToBeRendered =notCompletedTodos
+  }else{
+    todosToBeRendered = todos
+  }
+
+ const todosJsx = todosToBeRendered.map((t) => {
+    return <Todo key={t.id} todo={t} />;
+  });
+  
+  
+  useEffect(()=>{
+    const StorageTodos = JSON.parse(localStorage.getItem("todos"))
+    setTodos(StorageTodos)
+  }, [])
+
+  function changeDisplayType(e){
+  setDisplayedTodosType(e.target.value)  }
 
   function handleAddClick(){ 
     const newTodo = {
@@ -37,11 +64,21 @@ export default function TodoList() {
     setTitleInput("")
   }
 
-
   return (
     <Container maxWidth="sm" sx={{ p: 0 }}> 
-      <Card sx={{ width: '100%', p: 0, display:"flex", justifyContent:"center" }}> 
-        <CardContent sx={{ px: 2, width: '100%',display:"flex", justifyContent:"center", alignItems:"center" , flexDirection:"column",py: 1 }}> {/* Adjust padding */}
+      <Card 
+  sx={{ 
+    maxHeight: '80vh', 
+    overflowY: 'scroll', 
+    overflowX: 'hidden',  // This hides horizontal scroll
+    minWidth: 300,
+    '&::-webkit-scrollbar': {
+      width: '0.4em'  // Optional: makes vertical scrollbar thinner
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#6896D2'  // Optional: styles the scrollbar thumb
+    }
+  }}>        <CardContent sx={{ px: 2, width: '100%',display:"flex", justifyContent:"center", alignItems:"center" , flexDirection:"column",py: 1 }}> {/* Adjust padding */}
           <Typography 
             sx={{ 
               fontSize: "26px", 
@@ -59,20 +96,24 @@ export default function TodoList() {
 
           {/* Task Filter */}
           <ToggleButtonGroup 
+          onChange={changeDisplayType}
+          value={displayedTodosType}
             sx={{ 
-              background: "#E1EDFD", 
-              color: "#515151",
-              mb: 2,
-              width: '100%'
+                mb: 2,
+              width: '100%',
+
+            
             }}
             exclusive
             aria-label="task filter"
           >
-            <ToggleButton 
-              value="all" 
+            <ToggleButton value="all" 
               sx={{ 
-                color: "white", 
-                background: "#6896D2",
+              backgroundColor: displayedTodosType === "all" ?"#6896D2"  : "#",
+              color: displayedTodosType === "all" ? "#515151" : "#515151",    
+            '&:hover': {
+              backgroundColor: displayedTodosType === "all" ? "#6896D2" : "#E1EDFD"
+             },
                 flex: 1,
                 py: 1
               }}
@@ -81,18 +122,39 @@ export default function TodoList() {
                 all
               </Typography>
             </ToggleButton>
-            <ToggleButton value="done" sx={{ flex: 1, py: 1 }}>
+
+            <ToggleButton value="done"  
+             sx={{ 
+             color: displayedTodosType === "done" ? "white" : "#515151",
+             backgroundColor: displayedTodosType === "done" ? "#6896D2" : "transparent",
+                '&:hover': {
+                  backgroundColor: displayedTodosType === "done" ? "#6896D2" : "#E1EDFD"
+                },
+                flex: 1,
+                py: 1
+              }}>
               done
             </ToggleButton>
-            <ToggleButton value="notYet" sx={{ flex: 1, py: 1 }}>
+
+            <ToggleButton value="notYet"  
+            sx={{ 
+                 flex: 1, 
+                 py: 1,
+                 color: displayedTodosType === "notYet" ? "white" : "#515151",
+                 backgroundColor: displayedTodosType === "notYet" ? "#6896D2" : "transparent",
+                 '&:hover': {
+                   backgroundColor: displayedTodosType === "notYet" ? "#6896D2" : "#E1EDFD"
+                 }
+               }}
+              >
               not yet
             </ToggleButton>
+            
           </ToggleButtonGroup>
 
-          {todosJsx}
 
           {/* Input field section - Full width */}
-          <Grid container spacing={1} sx={{ mt: 2, width: '100%',display:"flex" , justifyContent:"center" }} >
+          <Grid container spacing={1} sx={{ mt: 2,mb:4 , width: '100%',display:"flex" , justifyContent:"center" }} >
             <Grid item xs={8} sx={{ pl: 0 }}> {/* Remove left padding */}
               <TextField
                 value={titleInput}
@@ -114,11 +176,15 @@ export default function TodoList() {
                   height: '40px',
                   borderRadius: '0 4px 4px 0' /* Rounded right corners only */
                 }}
+                disabled={titleInput == 0}
               >
                 Add
               </Button>
             </Grid>
-          </Grid>
+          </Grid>          
+
+          {todosJsx}
+
         </CardContent>
       </Card>
     </Container>
