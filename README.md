@@ -1,8 +1,7 @@
-# TODO APP Project 
+# TODO App Project
 
-🔥 Built with React.js | 🚧 Work in Progress
-working on new features..
-  
-  
-## Screenshot
-![design Demo](/src/assets/Desktop%20-%2011.png)
+✅ **Project Completed** | ✨ **New Features Coming Soon**  
+Built with React.js & material ui
+
+## Screenshot  
+![Design Demo](/src/assets/Desktop%20-%2011.png)  
