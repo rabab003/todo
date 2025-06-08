@@ -43,7 +43,7 @@ const notCompletedTodos = todos.filter((t) => !t.isCompleted);
   
   
   useEffect(()=>{
-    const StorageTodos = JSON.parse(localStorage.getItem("todos"))
+    const StorageTodos = JSON.parse(localStorage.getItem("todos")) ?? []
     setTodos(StorageTodos)
   }, [])
 
