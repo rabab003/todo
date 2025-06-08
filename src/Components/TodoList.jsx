@@ -155,7 +155,7 @@ const notCompletedTodos = todos.filter((t) => !t.isCompleted);
 
           {/* Input field section - Full width */}
           <Grid container spacing={1} sx={{ mt: 2,mb:4 , width: '100%',display:"flex" , justifyContent:"center" }} >
-            <Grid item xs={8} sx={{ pl: 0 }}> {/* Remove left padding */}
+            <Grid item xs={8} sx={{ pl: 0 }}> 
               <TextField
                 value={titleInput}
                 onChange={(e)=> setTitleInput(e.target.value)}
@@ -171,7 +171,7 @@ const notCompletedTodos = todos.filter((t) => !t.isCompleted);
               <Button 
                 onClick={handleAddClick}
                 variant="contained" 
-                color="secondary"
+                color="#6896D2"
                 sx={{ 
                   height: '40px',
                   borderRadius: '0 4px 4px 0' /* Rounded right corners only */
