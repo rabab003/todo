@@ -75,13 +75,13 @@ return todos.filter((t) => !t.isCompleted);
   sx={{ 
     maxHeight: '80vh', 
     overflowY: 'scroll', 
-    overflowX: 'hidden',  // This hides horizontal scroll
+    overflowX: 'hidden',  
     minWidth: 300,
     '&::-webkit-scrollbar': {
-      width: '0.4em'  // Optional: makes vertical scrollbar thinner
+      width: '0.4em'  
     },
     '&::-webkit-scrollbar-thumb': {
-      backgroundColor: '#6896D2'  // Optional: styles the scrollbar thumb
+      backgroundColor: '#6896D2'  
     }
   }}>        <CardContent sx={{ px: 2, width: '100%',display:"flex", justifyContent:"center", alignItems:"center" , flexDirection:"column",py: 1 }}> {/* Adjust padding */}
           <Typography 
